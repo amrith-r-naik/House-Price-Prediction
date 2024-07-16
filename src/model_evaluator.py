@@ -2,29 +2,51 @@
 import pandas as pd
 import numpy as np
 import joblib
-from sklearn.metrics import accuracy_score, precision_score, f1_score, recall_score, confusion_matrix
+from sklearn.metrics import accuracy_score, precision_score, f1_score, mean_squared_error, mean_absolute_error
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-# Function that takes in model_path & test_data.csv as input then performs metric calculation, displaying the confusion matrix and what not
-def evaluate(model_path, test_data_path):
-  test_data = pd.read_csv(test_data_path)   # Load the test data
-  model = joblib.load(model_path)           # Load the saved model
+def evaluate_metrics(model_path, test_data_path, residual_plot=True):
+  '''
+  Evaluates given model on the test data and prints the metrics.
 
-  X_test = test_data[1:-1]                  # Get features columns
-  y_true = test_data[-1]                    # Get target variable
+  Parameters
+  ----------
+  model_path : str
+    The path to where the model is stored.
+  test_data_path : str
+    The path to where the test data is stored. The test data must be a csv file.
+  residual_plot : bool, default=True
+    If "False", the function does not display a residual plot.
+    Else, the function displays a residual plot.
 
-  y_pred = model.predict(X_test)            # Test the model
+  Examples
+  ----------
+  >>> evaluate_metrics('models/randomforest_model.pkl','data/test.csv')
+  >>> evaluate_metrics('models/xgboost_model.pkl','data/test.csv')
+  '''
+
+  # Load the test data and saved model
+  test_data = pd.read_csv(test_data_path)
+  model = joblib.load(model_path)
+
+  # Get features columns and target variable
+  X_test = test_data[1:-1]
+  y_true = test_data[-1]
+
+  # Test the model
+  y_pred = model.predict(X_test)
 
   # Calculate the metrics and store in a dictionary
   metrics = {}
   metrics['Accuracy'] = accuracy_score(y_true,y_pred)
   metrics['Precision'] = precision_score(y_true,y_pred)
   metrics['F1 Score'] = f1_score(y_true,y_pred)
-  metrics['Sensitivity'] = recall_score(y_true,y_pred)
-  cm = confusion_matrix(y_true,y_pred)
-  tn = cm[0, 0]
-  fp = cm[0, 1]
-  metrics['Specificity'] = tn / (tn + fp) if (tn + fp) != 0 else 0
+  metrics['Mean Squared Error'] = mean_squared_error(y_true,y_pred)
+  metrics['Mean Absolute Error'] = mean_absolute_error(y_true,y_pred)
 
   # Print each of the metric
   for metric, value in metrics.items():
     print(f'{metric}: {(value*100):.2f}%')
+
+  # Print the residual plot yet to be implemented
