@@ -31,7 +31,3 @@ def preprocess(data):
 
     train.to_csv('data/training_data.csv', index=False)
     test.to_csv('data/testing_data.csv', index=False)
-
-if __name__ == '__main__':
-    dataset = pd.read_csv('data/csvdata.csv')
-    preprocess(dataset)
