@@ -5,24 +5,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 
 # Preprocessing
 def preprocess(data):
-    # Load data
-    #print(data.head(5))
-
-    # Getting to know data
-    #print(f'Number of rows: {data.shape[0]}')
-    #print(f'Number of columns: {data.shape[1]}')
-    #print(data.info()) # There are no null values
-
-    #for col in data.columns:
-    #    print(data[col].value_counts())
-    # Dont think any feature selection and further preprocessing necessary.
 
     # Data Split
     X = data.drop('Price', axis=1)
     y = data['Price']
+
+    enc = LabelEncoder()
+    X['City'] = enc.fit_transform(X['City'])
+    X['Location'] = enc.fit_transform(X['Location'])
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
