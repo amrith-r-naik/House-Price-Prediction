@@ -7,7 +7,7 @@
  - 
 
 ## Dataset
-The dataset used in the project is: https://www.kaggle.com/datasets/sanyamgoyal401/customer-purchases-behaviour-dataset./https://www.kaggle.com/datasets/zeesolver/consumer-behavior-and-shopping-habits-dataset
+The dataset used in the project is: https://www.kaggle.com/datasets/jacksondivakarr/house-price-prediction-dataset
 
 It contains the information about customers, their income, loyalty status and other relevant features.
 
